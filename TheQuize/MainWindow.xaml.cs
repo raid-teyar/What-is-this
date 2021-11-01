@@ -2,10 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using NAudio.Wave;
-
+using TheQuize.pages;
 namespace TheQuize
 {
     /// <summary>
@@ -14,6 +12,7 @@ namespace TheQuize
     public partial class MainWindow : Window
     {
         Helpers helpers = new Helpers();
+        Home home = new Home();
         public MainWindow()
         {
             InitializeComponent();
@@ -49,41 +48,20 @@ namespace TheQuize
         {
             DoubleAnimation stayAnimation = new DoubleAnimation(1, 1, TimeSpan.FromMilliseconds(2000));
             stayAnimation.Completed += StayAnimation_Completed;
-            splashScreen.BeginAnimation(OpacityProperty ,stayAnimation);
+            splashScreen.BeginAnimation(OpacityProperty, stayAnimation);
         }
 
         private void StayAnimation_Completed(object sender, EventArgs e)
         {
             DoubleAnimation opacityAnimation = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(1000));
-            opacityAnimation.Completed += OpacityAnimation_Completed;
+            opacityAnimation.Completed += home.OpacityAnimation_Completed;
+            opacityAnimation.Completed += OpacityAnimation_Completed2;
             splashScreen.BeginAnimation(OpacityProperty, opacityAnimation);
         }
 
-
-        private void OpacityAnimation_Completed(object sender, EventArgs e)
+        private void OpacityAnimation_Completed2(object sender, EventArgs e)
         {
-            DoubleAnimation opacityAnimation = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(1000));
-            mainGrid.BeginAnimation(OpacityProperty, opacityAnimation);
-            helpers.PlayMusic("src/light-step-8021.mp3", .1f, true);
-        }
-
-        private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
-        {
-            helpers.PlayMusic("src/hover.wav", .8f);
-        }
-
-        private void TextBlock_MouseDown_1(object sender, MouseButtonEventArgs e)
-        {
-            TextBlock textBox = (TextBlock)sender;
-            if (textBox.Text != "Quit")
-            {
-                pageFrame.Navigate(new Uri($"pages/{textBox.Text}.xaml", UriKind.Relative));
-            }
+            pageFrame.NavigationService.Navigate(new Uri("pages/Home.xaml", UriKind.Relative));
         }
     }
 }

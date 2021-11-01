@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using HandyControl.Controls;
 
 namespace TheQuize.pages
 {
@@ -23,6 +24,11 @@ namespace TheQuize.pages
         public Settings()
         {
             InitializeComponent();
+        }
+
+        private void Label_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.GoBack();
         }
     }
 }
